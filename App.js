@@ -8,23 +8,28 @@ import {
   TextInput,
   TouchableNativeFeedback,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import Header from './src/components/Header'
+import { StatusBar } from "expo-status-bar";
 
 
 export default function App() {
 
   const [drinks, setDrinks] = useState([]);
+  const [modal, setModal] = useState(true);
   const [loading, setLoading] = useState(true);
   const [submit, setSubmit] = useState("");
   const [string, setString] = useState("");
 
   const handleSearch = (str) => {
     setString(str);
-    if (string.length > 2) {
-      setSubmit(string);
+    if (string.length < 4) {
+      setSubmit('')
+    } else {
+      setSubmit(string)
     }
   };
 
@@ -42,11 +47,14 @@ export default function App() {
         setDrinks(data.drinks);
         setLoading(false);
       });
-  }, []);
+  }, [submit]);
 
   const handleKeyDown = (e) => {
     if (e.nativeEvent.key == "Enter") {
       dismissKeyboard();
+    }
+    if (e.nativeEvent.key == 'Backspace') {
+      
     }
   };
 
@@ -57,11 +65,40 @@ export default function App() {
       </View>
     );
   }
+
+  if (modal) {
+    return (
+      <>
+        <Modal animationType="slide" transparent={false} visible={modal}>
+          <LinearGradient
+            colors={["#8200cc", "#ff5f6d", "#ffc371"]}
+            style={styles.linearGradient}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Header />
+              <TouchableNativeFeedback onPress={() => setModal(!modal)}>
+                <Text style={{ color: "white", fontSize: 18, paddingTop: 15 }}>
+                  ENTER
+                </Text>
+              </TouchableNativeFeedback>
+            </View>
+          </LinearGradient>
+        </Modal>
+        <StatusBar hidden={true} />
+      </>
+    );
+  }
   
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#ff5f6d", "#ffc371"]}
+        colors={["#8200cc", "#ff5f6d", "#ffc371"]}
         style={styles.linearGradient}
       >
         <Header />
@@ -76,6 +113,7 @@ export default function App() {
             style={styles.input}
             placeholder="Search your favorite drink..."
             placeholderTextColor="white"
+            autoFocus={true}
             onChangeText={(str) => handleSearch(str)}
             onKeyPress={(e) => handleKeyDown(e)}
             value={string}
@@ -86,6 +124,9 @@ export default function App() {
           >
             <MaterialIcons name="clear" size={24} color="white" />
           </TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={() => setModal(!modal)}>
+            <AntDesign name="home" size={20} color="white" />
+          </TouchableNativeFeedback>
         </View>
         <View style={styles.listContainer}>
           <FlatList
@@ -93,7 +134,7 @@ export default function App() {
             renderItem={({ item }) => (
               <View style={styles.card}>
                 <Image
-                  style={{width: 80, height: 80, borderRadius: 30}}
+                  style={{ width: 80, height: 80, borderRadius: 30 }}
                   source={{ uri: item.strDrinkThumb }}
                 />
                 <View>
@@ -108,6 +149,7 @@ export default function App() {
           />
         </View>
       </LinearGradient>
+      <StatusBar hidden={true}    />
     </View>
   );
 }
@@ -120,7 +162,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: 25,
     alignItems: "stretch",
     justifyContent: "center",
   },
@@ -138,15 +179,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingLeft: 10,
     paddingVertical: 10,
     marginVertical: 5,
     borderColor: "transparent",
     borderWidth: 2,
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: "center"
+    flexDirection: "row",
+    alignItems: "center",
   },
   input: {
     flex: 8,
