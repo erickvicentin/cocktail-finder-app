@@ -25,18 +25,18 @@ export default function App() {
   const [string, setString] = useState("");
 
   const handleSearch = (str) => {
-    setString(str);
-    if (string.length < 4) {
-      setSubmit('')
-    } else {
-      setSubmit(string)
-    }
+        setString(str);
+    if (str.length >= 3) {
+        setSubmit(str);
+      } else {
+        setSubmit('unexistent')
+      }
   };
 
   const clear = () => {
     console.log(`string: ${string}`);
     console.log(`submit: ${submit}`);
-    setSubmit("");
+    setSubmit("unexistent");
     setString("");
   };
 
@@ -53,10 +53,15 @@ export default function App() {
     if (e.nativeEvent.key == "Enter") {
       dismissKeyboard();
     }
-    if (e.nativeEvent.key == 'Backspace') {
+  };
+
+  const handleInputModal = (ent) => {
+    if (ent.length >= 3) {
+      setModal(!modal);
+      setString(ent);
       
     }
-  };
+  }
 
   if (loading) {
     return (
@@ -77,20 +82,24 @@ export default function App() {
             <View
               style={{
                 flex: 1,
-                justifyContent: "center",
+                paddingTop: 200,
+                justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
-              <Header />
-              <TouchableNativeFeedback onPress={() => setModal(!modal)}>
-                <Text style={{ color: "white", fontSize: 18, paddingTop: 15 }}>
-                  ENTER
-                </Text>
-              </TouchableNativeFeedback>
+              <Header sizeElements={30}/>
+              <View style={styles.searchBarModal}>
+                <TextInput
+                  placeholder="Search your favorite drink..."
+                  onChangeText={(ent) => handleInputModal(ent)}
+                  placeholderTextColor="white"
+                  style={{ color: "white", textAlign: "center", fontSize: 16 }}
+                />
+              </View>
             </View>
           </LinearGradient>
+          <StatusBar hidden={true} />
         </Modal>
-        <StatusBar hidden={true} />
       </>
     );
   }
@@ -101,7 +110,7 @@ export default function App() {
         colors={["#8200cc", "#ff5f6d", "#ffc371"]}
         style={styles.linearGradient}
       >
-        <Header />
+        <Header sizeElements={25}/>
         <View style={styles.searchBar}>
           <Ionicons
             name="ios-search"
@@ -149,7 +158,7 @@ export default function App() {
           />
         </View>
       </LinearGradient>
-      <StatusBar hidden={true}    />
+      <StatusBar hidden={true} />
     </View>
   );
 }
@@ -163,7 +172,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "stretch",
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   item: {
     padding: 10,
@@ -212,4 +221,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingBottom: 5,
   },
+  searchBarModal: {
+    alignItems: "center",
+    borderColor: "white",
+    borderWidth: 2,
+    borderRadius: 30,
+    padding: 10,
+    width: '80%',
+  }
 });

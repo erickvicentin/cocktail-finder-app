@@ -2,11 +2,17 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Fontisto } from "@expo/vector-icons";
 
-const Header = () => {
+const Header = ({ sizeElements }) => {
+  const size = sizeElements;
+
   return (
     <View style={styles.header}>
-      <Fontisto name="cocktail" size={30} color="white" />
-      <Text style={styles.title}>Cocktail-Finder</Text>
+      <Fontisto name="cocktail" size={sizeElements+10} color="white" />
+      <Text style={(({  fontSize: sizeElements, padding: 10, color: 'white', fontWeight: 'bold'  }))}>
+        
+        Cocktail-Finder
+      
+      </Text>
     </View>
   );
 };
@@ -20,11 +26,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 5,
     paddingTop: 25,
-  },
-  title: {
-    fontSize: 20,
-    padding: 10,
-    color: "white",
-    fontWeight: "bold",
   },
 });
