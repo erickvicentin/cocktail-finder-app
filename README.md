@@ -2,6 +2,9 @@
 
 Welcome to **Cocktail Finder**, a sleek and performant React Native application that helps you discover your favorite drinks and cocktails seamlessly. Built with modern React Native patterns and Expo, this application provides an intuitive search experience powered by TheCocktailDB API.
 
+<img width="561" height="1056" alt="image" src="https://github.com/user-attachments/assets/e69a6b09-a46d-401b-bb66-466704b05901" />
+
+
 ## ✨ Features
 
 - **Live Search with Debouncing:** As you type, the app intelligently waits for a pause before fetching results, optimizing network usage and API limits.
