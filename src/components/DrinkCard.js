@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const DrinkCard = ({ drink }) => {
+const DrinkCard = ({ drink, onPress }) => {
   return (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
+    <TouchableOpacity style={styles.card} activeOpacity={0.8} onPress={() => onPress(drink)}>
       <Image
         style={styles.image}
         source={{ uri: drink.strDrinkThumb }}
@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingVertical: 10,
     marginVertical: 6,
-    borderRadius: 12,
+    borderRadius: 10,
+    borderColor: '#2c2c05ff',
+    borderWidth: 3,
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
   image: {
     width: 80, 
     height: 80, 
-    borderRadius: 12 
+    borderRadius: 10
   },
   info: {
     flex: 1,

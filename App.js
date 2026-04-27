@@ -16,6 +16,7 @@ import { Ionicons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import Header from "./src/components/Header";
 import DrinkCard from "./src/components/DrinkCard";
+import DrinkDetailModal from "./src/components/DrinkDetailModal";
 import useDebounce from "./src/hooks/useDebounce";
 import styles from "./src/styles/AppStyles";
 
@@ -24,6 +25,13 @@ export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDrinkId, setSelectedDrinkId] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+
+  const handleDrinkPress = (drink) => {
+    setSelectedDrinkId(drink.idDrink);
+    setIsDetailModalVisible(true);
+  };
   
   // Debounce the search query to avoid calling the API on every keystroke
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
@@ -131,7 +139,7 @@ export default function App() {
             ) : drinks.length > 0 ? (
               <FlatList
                 data={drinks}
-                renderItem={({ item }) => <DrinkCard drink={item} />}
+                renderItem={({ item }) => <DrinkCard drink={item} onPress={handleDrinkPress} />}
                 keyExtractor={(item) => item.idDrink}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
@@ -146,6 +154,11 @@ export default function App() {
         </SafeAreaView>
       </LinearGradient>
       <StatusBar style="light" hidden={false} />
+      <DrinkDetailModal 
+        isVisible={isDetailModalVisible}
+        drinkId={selectedDrinkId}
+        onClose={() => setIsDetailModalVisible(false)}
+      />
     </View>
   );
 }
